@@ -5,6 +5,41 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 
+public_users.post("/register", async (req, res) => {
+    const { username, password } = req.body; // Destructure username and password from request body
+
+    // Input Validation (Enhanced)
+
+    // Missing user or pass
+    if (!username || !password) {
+        return res.status(400).json({ message: "Missing required fields: username or password." });
+    }
+
+    // Check for Existing User
+    try {
+        const existingUser = await doesExist(username); // Use async/await for asynchronous operations
+        if (existingUser) {
+            return res.status(409).json({ message: "Username already exists. Please choose a different one." });
+        }
+    } catch (error) {
+        console.error("Error checking for existing user:", error);
+        return res.status(500).json({ message: "Internal server error. Please try again later." });
+    }
+
+    // Register User
+    try {
+        await addUser({ username, password: hashedPassword }); // Assume `addUser` handles storage (e.g., database)
+        return res.status(201).json({ message: "User successfully registered. Please login." });
+    } catch (error) {
+        console.error("Error registering user:", error);
+        return res.status(500).json({ message: "Internal server error. Please try again later." });
+    }
+});
+
+
+
+
+
 public_users.post("/register", (req,res) => {
 
     const username = req.params.username;
