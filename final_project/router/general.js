@@ -43,19 +43,35 @@ public_users.get('/isbn/:isbn',function (req, res) {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
     const author = req.params.author;
-    res.send(JSON.stringify(books[author]),null,4);
-});
+    for (const key in books) {
+        if (books[key].author === author) {
+          return res.send(JSON.stringify(books[key]), null, 4);
+        }
+      }
+      res.status(404).send('Author not found');
+    });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
-    res.send(JSON.stringify(books[title]),null,4);
-});
+    for (const key in books) {
+        if (books[key].title === title) {
+            return res.send(JSON.stringify(books[key]), null, 4);
+        }
+      }
+      res.status(404).send('Title not found');
+    });
 
 //  Get book review
-public_users.get('/review/:isbn',function (req, res) {
-    const review = req.params.review;
-    res.send(JSON.stringify(books[review]),null,4);
+public_users.get('/review/:isbn', function (req, res) {
+    const isbn = req.params.isbn;
+    const book = books[isbn]; // Directly access the book using the ISBN as the key
+    if (book) { // Check if the book exists
+        const reviews = book.reviews;
+        return res.send(JSON.stringify(reviews), null, 4);
+    }
+
+    res.status(404).send('Reviews not found');
 });
 
 module.exports.general = public_users;
