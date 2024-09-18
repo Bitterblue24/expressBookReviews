@@ -58,11 +58,15 @@ const public_users = express.Router();
 //});
 
 
-//tested, works! :)
+//trying to add registered user to users array :/
 public_users.post("/register", (req, res) => {
     const { username, password } = req.body; 
-    users.push({"username": username, "password": password});
+    if (username && password) {
+    public_users.push({"username": username, "password": password});
         return res.status(200).json({message: "User successfully registered. Now you can login"});
+    }else{
+        return res.status(400).json({message: "well fuck"});
+    }
     });
 
 // Get the book list available in the shop
