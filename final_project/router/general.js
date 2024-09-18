@@ -58,7 +58,7 @@ const public_users = express.Router();
 //});
 
 
-//tested, works :)
+//tested, works! :)
 public_users.post("/register", (req, res) => {
     const { username, password } = req.body; 
     users.push({"username": username, "password": password});
