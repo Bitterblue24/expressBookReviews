@@ -93,6 +93,17 @@ public_users.get('/author/:author',function (req, res) {
       res.status(404).send('Author not found');
     });
 
+public_users.get('/author/:author', function (req, res) {
+    const author = req.params.author;
+    return new Promise((resolve, reject) => {
+        resolve(res.send(JSON.stringify(books[author]) ,null, 4));
+    }).catch ((Error) => {
+        reject (Error);
+    });
+});
+
+
+
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
@@ -103,6 +114,16 @@ public_users.get('/title/:title',function (req, res) {
       }
       res.status(404).send('Title not found');
     });
+
+public_users.get('/title/:title', function (req, res) {
+    const title = req.params.title;
+    return new Promise((resolve, reject) => {
+        resolve(res.send(JSON.stringify(books[title]), null, 4));
+    }).catch ((Error) => {
+        reject (Error);
+    });
+});
+
 
 //  Get book review
 public_users.get('/review/:isbn', function (req, res) {
